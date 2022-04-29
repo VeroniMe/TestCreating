@@ -346,26 +346,26 @@ public class mainProjectB {
 					}
 					System.out.println(theTest.createAutoExam(num)); // sort and print
 					///////////// save test to file
-					StringBuffer fileName = new StringBuffer();
-					fileName.append("exam_");
-					Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
-
-					int day = localCalendar.get(Calendar.DATE);
-					int month = localCalendar.get(Calendar.MONTH) + 1;
-					int year = localCalendar.get(Calendar.YEAR);
-					fileName.append(year + "_" + month + "_" + day);
-
-					File examFile = new File(fileName.toString());
-					try {
-
-						if (examFile.createNewFile()) {
-							System.out.println("File created: " + examFile.getName() + "\n");
-						} else {
-							System.out.println("File already exists.\n");
-						}
-					} catch (IOException e) {
-						System.out.println("An error occurred.\n");
-					}
+//					StringBuffer fileName = new StringBuffer();
+//					fileName.append("exam_");
+//					Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+//
+//					int day = localCalendar.get(Calendar.DATE);
+//					int month = localCalendar.get(Calendar.MONTH) + 1;
+//					int year = localCalendar.get(Calendar.YEAR);
+//					fileName.append(year + "_" + month + "_" + day);
+//
+//					File examFile = new File(fileName.toString());
+//					try {
+//
+//						if (examFile.createNewFile()) {
+//							System.out.println("File created: " + examFile.getName() + "\n");
+//						} else {
+//							System.out.println("File already exists.\n");
+//						}
+//					} catch (IOException e) {
+//						System.out.println("An error occurred.\n");
+//					}
 
 					break;
 				}
