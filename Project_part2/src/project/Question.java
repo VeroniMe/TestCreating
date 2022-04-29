@@ -45,6 +45,8 @@ public abstract class Question {
 	public <t> Object getAnswer() {
 		return null;
 	}
+	public abstract int getAnswerLength();
+	
 	public boolean addAnswer(String string, boolean b) {
 	return true;
 		

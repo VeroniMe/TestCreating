@@ -8,20 +8,22 @@ import java.util.Calendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.TimeZone;
+
 public class mainProjectB {
 //********************************************************************************
-public static void printMenu() {
-	System.out.println("Case 1: Questions and answers view");
-	System.out.println("Case 2: Add new question with answers to the test");
-	System.out.println("Case 3: Edit existing question");
-	System.out.println("Case 4: Edit existing answer");
-	System.out.println("Case 5: Delete answer of spesific question");
-	System.out.println("Case 6: Create test manualy");
-	System.out.println("Case 7: Create automatic test");
-	System.out.println("Case 8: Creating copy of existing test");
-	System.out.println("Case 9: Exit\n");
-	System.out.println("Enter your choise:");
-}
+	public static void printMenu() {
+		System.out.println("Case 1: Questions and answers view");
+		System.out.println("Case 2: Add new question with answers to the test");
+		System.out.println("Case 3: Edit existing question");
+		System.out.println("Case 4: Edit existing answer");
+		System.out.println("Case 5: Delete answer of spesific question");
+		System.out.println("Case 6: Create test manualy");
+		System.out.println("Case 7: Create automatic test");
+		System.out.println("Case 8: Creating copy of existing test");
+		System.out.println("Case 9: Exit\n");
+		System.out.println("Enter your choise:");
+	}
+
 //********************************************************************************
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
@@ -30,8 +32,7 @@ public static void printMenu() {
 		TestManager theTest = new TestManager();
 		theTest.reStart();
 		int choice = 0;
-		System.out.println(
-				"Hello!\nAnd welcome to our tests creation system.\n"
+		System.out.println("Hello!\nAnd welcome to our tests creation system.\n"
 				+ "Here you will be able to create tests for every subject "
 				+ "you would like.\nLets get started(:\nFor your convenience, the Menu:\n");
 		do {
@@ -65,7 +66,8 @@ public static void printMenu() {
 						while ((cont == 1) && (num < 10)) {
 							System.out.println("Type the " + (num + 1) + " answer:");
 							String a = input.next();
-							System.out.println("This answer 'True' or 'False'?\nIf true - enter T. If false - enter F:");
+							System.out
+									.println("This answer 'True' or 'False'?\nIf true - enter T. If false - enter F:");
 							char cor = input.next().charAt(0);
 							boolean isCorrect;
 							while (cor != 't' && cor != 'f' && cor != 'T' && cor != 'F') {
@@ -77,7 +79,8 @@ public static void printMenu() {
 							} else {
 								isCorrect = false;
 							}
-							theTest.getAmericanQuestions().get(theTest.getAmericanQuestions().size()-1).addAnswer(a,isCorrect);
+							theTest.getAmericanQuestions().get(theTest.getAmericanQuestions().size() - 1).addAnswer(a,
+									isCorrect);
 
 							if (num >= 3) {
 								System.out.println("In order to add another answer press '1'");
@@ -85,9 +88,9 @@ public static void printMenu() {
 							} else {
 								cont = 1;
 							}
-							
+
 							num++;
-							
+
 						}
 					}
 					if (ans == 'o' || ans == 'O') { // build open question
@@ -128,7 +131,7 @@ public static void printMenu() {
 						theTest.upDateOpenQuestion(serial, newQ);
 					}
 					if (ans == 'a' || ans == 'A') {
-						System.out.println(theTest.printAmericanQuestionsWithSerial()); 
+						System.out.println(theTest.printAmericanQuestionsWithSerial());
 						System.out.println("Enter serial of the question you would like to update:");
 						int serial = input.nextInt();
 						while (theTest.findAmericanQuestion(serial) == -1) {
@@ -174,7 +177,8 @@ public static void printMenu() {
 						System.out.println(theTest.printAmericanAnswers(serial));
 						System.out.println("Enter number of answer you would like to update:");
 						int index = input.nextInt();
-						while (index <= 0 || index > theTest.getAmericanQuestions().get(theTest.findAmericanQuestion(serial)).getAnswer().size()) {
+						while (index <= 0 || index > theTest.getAmericanQuestions()
+								.get(theTest.findAmericanQuestion(serial)).getAnswer().size()) {
 							System.out.println("Answer is not exist. Please try again ");
 							index = input.nextInt();
 						}
@@ -193,7 +197,7 @@ public static void printMenu() {
 						} else {
 							isCorrect = false;
 						}
-						
+
 						theTest.upDateAmericanAnswer(serial, index - 1, newA, isCorrect);
 					}
 					break;
@@ -204,38 +208,40 @@ public static void printMenu() {
 					System.out.println(theTest.printAmericanQuestionsWithSerial());
 					System.out.println("Enter serial of the question you would like to update:");
 					int serial = input.nextInt();
-					
+
 					while (theTest.findAmericanQuestion(serial) == -1) {
 						System.out.println("Question is not exist. Please try again");
 						serial = input.nextInt();
 					}
-					
+
 					if (theTest.getAmericanQuestions().isEmpty()) {
 						System.out.println("Question don't have any answers. You return to menu.\n");
 						break;
 					}
-					
+
 					System.out.println(theTest.printAmericanQuestionsWithSerial());
 
 					System.out.println("Enter number of answer you would like to delete:");
 					int num2 = input.nextInt();
-					
-					while (num2 <= 0 || num2 > theTest.getAmericanQuestions().get(theTest.findAmericanQuestion(serial)).getAnswer().size()) {
+
+					while (num2 <= 0 || num2 > theTest.getAmericanQuestions().get(theTest.findAmericanQuestion(serial))
+							.getAnswer().size()) {
 						System.out.println("Answer is not exist. Please try again ");
 						num2 = input.nextInt();
 					}
-					
+
 					theTest.deleteAmericanAnswer(serial, num2 - 1);
-					
+
 					break;
 				}
 //********************************************************************************
 				case 6: {
 					System.out.println("How many questions do you want in the test?");
 					int num = input.nextInt();
-					int m = 1; 
+					int m = 1;
 					int help = theTest.getOpenQuestions().size() + theTest.getAmericanQuestions().size();
-					while (num < 0 || num > help) { // for checking if input is not greater than num of questions in system
+					while (num < 0 || num > help) { // for checking if input is not greater than num of questions in
+													// system
 						if (m == 1) {
 							System.out.println("There are " + help + " questions in the system");
 							m++;
@@ -243,77 +249,94 @@ public static void printMenu() {
 						System.out.println("Please try again");
 						num = input.nextInt();
 					}
-					int[] serialNumbers=new int[num];
+					int[] serialNumbers = new int[num];
 					System.out.println(theTest.printOpenQuestionsWithSerial());
 					System.out.println(theTest.printAmericanQuestionsWithSerial());
-					for(int i=0; i<num; i++) {
+					for (int i = 0; i < num; i++) {
 						System.out.println("Choose question by its serial num:");
 						int serial = input.nextInt();
-						while ((theTest.findOpenQuestion(serial) == -1) && (theTest.findAmericanQuestion(serial) == -1)) {
+						while ((theTest.findOpenQuestion(serial) == -1)
+								&& (theTest.findAmericanQuestion(serial) == -1)) {
 							System.out.println("Question is not exist. Please try again");
 							serial = input.nextInt();
-						}	
-						serialNumbers[i]=serial;
+						}
+						serialNumbers[i] = serial;
 					}
-					Exam newExam=theTest.createExamManualy(serialNumbers); 
-					for(int n=0; n < serialNumbers.length; n++) {
-						
-						help=theTest.findAmericanQuestion(serialNumbers[n]);
-						
-						if (help!=-1) { //question is american
-							newExam.getQuestions().get(n).addAnswer("There are no correct answers", true);  //adding defult answers
+					System.out.println("Choose sorting option:\n1 - for sort in lexicography order\n"
+							+ "2 - for sort by answer length");
+					int sortType = input.nextInt();
+					Exam newExam = theTest.createExamManualy(serialNumbers);
+
+					for (int n = 0; n < serialNumbers.length; n++) {
+
+						help = theTest.findAmericanQuestion(serialNumbers[n]);
+
+						if (help != -1) { // question is american
+							newExam.getQuestions().get(n).addAnswer("There are no correct answers", true); // adding
+																											// defult
+																											// answers
 							newExam.getQuestions().get(n).addAnswer("There are more than one correct answer", false);
-							System.out.println(theTest.getAmericanQuestions().get(help).getQuestion()); 
-							System.out.println(theTest.printAmericanAnswers(serialNumbers[n])); 
+							System.out.println(theTest.getAmericanQuestions().get(help).getQuestion());
+							System.out.println(theTest.printAmericanAnswers(serialNumbers[n]));
 							System.out.println("\nChoose answers by its num. In order to stop press 0:");
 							System.out.println("Your choise:");
-							int answer=input.nextInt();
-							while (answer!=0) {
-							if (answer < 0 || answer > (theTest.getAmericanQuestions().get(help).getAnswer().size())) {
-								System.out.println("Answer is not exist. Please try again");
-								answer = input.nextInt();							
-							}
-							else {
-                            newExam.getQuestions().get(n).addAnswer(theTest.getAmericanQuestions().get(help).getAnswer().get(answer-1));
-                            System.out.println("Your choise:");
-							answer = input.nextInt();
-                            }
-							
+							int answer = input.nextInt();
+							while (answer != 0) {
+								if (answer < 0
+										|| answer > (theTest.getAmericanQuestions().get(help).getAnswer().size())) {
+									System.out.println("Answer is not exist. Please try again");
+									answer = input.nextInt();
+								} else {
+									newExam.getQuestions().get(n).addAnswer(
+											theTest.getAmericanQuestions().get(help).getAnswer().get(answer - 1));
+									System.out.println("Your choise:");
+									answer = input.nextInt();
+								}
+
 							}
 							((AmericanQuestion) newExam.getQuestions().get(n)).upDateDefultAnswers();
 						}
-					  } 
-					
-					 System.out.println(newExam);
-					StringBuffer fileName = new StringBuffer();
-					fileName.append("exam_");
-				    Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
-							
-				    int day = localCalendar.get(Calendar.DATE);
-				    int month = localCalendar.get(Calendar.MONTH) + 1;
-				    int year = localCalendar.get(Calendar.YEAR);
-				    fileName.append(year + "_" +month+ "_" + day);
-				    
-			        File examFile = new File(fileName.toString());
-					try {
-					      
-					      if (examFile.createNewFile()) {
-					        System.out.println("File created: " + examFile.getName()+"\n");
-					      } else {
-					        System.out.println("File already exists.\n");
-					      }
-					    } catch (IOException e) {
-					      System.out.println("An error occurred.\n");					      
-					    }
-					break;
-				} 
+					}
+
+					if (sortType == 1) {
+						newExam.getQuestions().sort(new CompareQuestionsLexicodraphy());
+						// Collections.sort(questionsForTest, new CompareQuestionsLexicodraphy());
+					} else if (sortType == 2) {
+						newExam.getQuestions().sort(new CompareQuestionsByAnswerLength());
+					}
+
+					System.out.println(newExam);
+
+//					
+//					StringBuffer fileName = new StringBuffer();
+//					fileName.append("exam_");
+//				    Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+//							
+//				    int day = localCalendar.get(Calendar.DATE);
+//				    int month = localCalendar.get(Calendar.MONTH) + 1;
+//				    int year = localCalendar.get(Calendar.YEAR);
+//				    fileName.append(year + "_" +month+ "_" + day);
+//				    
+//			        File examFile = new File(fileName.toString());
+//					try {
+//					      
+//					      if (examFile.createNewFile()) {
+//					        System.out.println("File created: " + examFile.getName()+"\n");
+//					      } else {
+//					        System.out.println("File already exists.\n");
+//					      }
+//					    } catch (IOException e) {
+//					      System.out.println("An error occurred.\n");					      
+//					    }
+//					break;
+				}
 //********************************************************************************
 				case 7: {
 					System.out.println("How many questions do you want in the test?");
 					int num = input.nextInt();
 					int m = 1;
 					int help = theTest.getOpenQuestions().size() + theTest.getAmericanQuestions().size();
-					while (num < 0|| num > help) {
+					while (num < 0 || num > help) {
 						if (m == 1) {
 							System.out.println("There are " + help + " questions in the system");
 							m++;
@@ -322,33 +345,33 @@ public static void printMenu() {
 						num = input.nextInt();
 					}
 					System.out.println(theTest.createAutoExam(num)); // sort and print
-					/////////////save test to file
+					///////////// save test to file
 					StringBuffer fileName = new StringBuffer();
 					fileName.append("exam_");
-				    Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
-							
-				    int day = localCalendar.get(Calendar.DATE);
-				    int month = localCalendar.get(Calendar.MONTH) + 1;
-				    int year = localCalendar.get(Calendar.YEAR);
-				    fileName.append(year + "_" +month+ "_" + day);
-				    
-			        File examFile = new File(fileName.toString());
+					Calendar localCalendar = Calendar.getInstance(TimeZone.getDefault());
+
+					int day = localCalendar.get(Calendar.DATE);
+					int month = localCalendar.get(Calendar.MONTH) + 1;
+					int year = localCalendar.get(Calendar.YEAR);
+					fileName.append(year + "_" + month + "_" + day);
+
+					File examFile = new File(fileName.toString());
 					try {
-					      
-					      if (examFile.createNewFile()) {
-					        System.out.println("File created: " + examFile.getName()+"\n");
-					      } else {
-					        System.out.println("File already exists.\n");
-					      }
-					    } catch (IOException e) {
-					      System.out.println("An error occurred.\n");					      
-					    }
-					  
+
+						if (examFile.createNewFile()) {
+							System.out.println("File created: " + examFile.getName() + "\n");
+						} else {
+							System.out.println("File already exists.\n");
+						}
+					} catch (IOException e) {
+						System.out.println("An error occurred.\n");
+					}
+
 					break;
 				}
 //********************************************************************************
 				case 8: {
-					///////////////////Creating copy of existing test
+					/////////////////// Creating copy of existing test
 					break;
 				}
 //********************************************************************************
@@ -363,17 +386,16 @@ public static void printMenu() {
 				}
 //********************************************************************************
 			} // try
-				catch (InputMismatchException e) {
+			catch (InputMismatchException e) {
 				System.out.println("You entered invalid option, you return to menu.\n");
 				input.nextLine();
-			//} catch (IndexOutOfBoundsException e) {
-				//System.out.println("You entered invalid number, you return to menu.\n");
+				// } catch (IndexOutOfBoundsException e) {
+				// System.out.println("You entered invalid number, you return to menu.\n");
 			} catch (NullPointerException e) {
-				System.out.println("General Error, you return to menu.\n");}
-			 catch (NegativeArraySizeException e) {
+				System.out.println("General Error, you return to menu.\n");
+			} catch (NegativeArraySizeException e) {
 				System.out.println("You need to enter a positive number, you return to menu.\n");
 			}
 		} while (choice != 8);
 	}
 }
-

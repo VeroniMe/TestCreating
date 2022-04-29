@@ -10,7 +10,7 @@ public class AmericanQuestion extends Question {
 	private final int MIN_NUM_ANSWERS = 4;	
 	
 //********************************************************************************
-	public AmericanQuestion(String question) {
+	public AmericanQuestion (String question) {
 		super(question);
 		this.answers = new ArrayList<>();
 	}
@@ -97,6 +97,15 @@ public class AmericanQuestion extends Question {
 		} 
 	}
 //********************************************************************************
+	public int getAnswerLength() {
+		int length = 0;
+		for (Answer a : answers) 
+		{ 
+		    length = length + a.getLength();
+		}
+		return length;
+	}
 
+	
 	
 }

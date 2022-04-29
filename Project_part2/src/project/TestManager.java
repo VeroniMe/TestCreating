@@ -3,6 +3,7 @@ package project;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class TestManager {
@@ -209,7 +210,9 @@ public class TestManager {
 
 //********************************************************************************
 	public Exam createExamManualy(int[] serialNumbers) { 
-		ArrayList<Question> questionsForTest = new ArrayList<>();
+		
+		ArrayList<Question> questionsForTest = new ArrayList<Question>();
+		
 		int help;
 		for(int i=0; i<serialNumbers.length; i++) {
 			
@@ -223,7 +226,9 @@ public class TestManager {
 		    questionsForTest.add(new AmericanQuestion(americanQuestions.get(help)));	//???
 		}
 		}
-		Exam newExam = new Exam(insertionQuestionsTest(questionsForTest));
+		
+		//Exam newExam = new Exam(insertionQuestionsTest(questionsForTest));
+		Exam newExam = new Exam(questionsForTest);
 		allExams.add(newExam);
 		return newExam;
 	}
@@ -258,9 +263,9 @@ public class TestManager {
 				questionsForTest.add(new OpenQuestion(openQuestions.get(help)));
 			}
 		}
+		
 		Exam newExam = new Exam(insertionQuestionsTest(questionsForTest));
-		File file=new File("C:\\Users\noa73\newFile.txt"); //?
-		allExams.add(newExam);
+		
 		return newExam;
 	 }
 //********************************************************************************

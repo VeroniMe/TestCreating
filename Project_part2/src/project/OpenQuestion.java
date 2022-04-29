@@ -29,8 +29,12 @@ public class OpenQuestion extends Question {
 	public Answer getAnswer() {
 		return answer;
 	}
+	public int getAnswerLength() {
+		return answer.getLength();
+	}
 	public void upDateDefultAnswers() {
 		
-			}
-	
+	}
+
+
 }

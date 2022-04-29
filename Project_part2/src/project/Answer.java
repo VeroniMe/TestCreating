@@ -20,6 +20,9 @@ public class Answer {
 	public String getAnswer() {
 		return answer;
 	}
+	public int getLength() {
+		return answer.length();
+	}
 //********************************************************************************
 	public void setCorrect(boolean isCorrect) {
 		this.isCorrect = isCorrect;
