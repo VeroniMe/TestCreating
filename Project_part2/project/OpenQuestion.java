@@ -8,7 +8,10 @@ public class OpenQuestion extends Question {
 		super(question);
 		this.answer = new Answer(answer,true);
 	}	
-	
+	public OpenQuestion(String question) {
+		super(question);
+		
+	}	
 	public OpenQuestion (OpenQuestion newQ) {
 		super(newQ);
 		this.answer = newQ.getAnswer();
@@ -34,6 +37,11 @@ public class OpenQuestion extends Question {
 	}
 	public void upDateDefultAnswers() {
 		
+	}
+	@Override
+	public boolean addAnswer(String answer, boolean isC) {
+		this.answer = new Answer(answer,isC);
+		return true;
 	}
 
 

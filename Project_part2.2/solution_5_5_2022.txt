@@ -1,0 +1,22 @@
+Question 1004:
+What animal is said to have 9 lives?
+	1) There are no correct answers - true
+	2) There are more than one correct answer - false
+	3) Whale - false
+	4) Cat - true
+	5) Dog - false
+	6) Deer - false
+
+Question 1003:
+What name is given to a female deer?
+	1) There are no correct answers - true
+	2) There are more than one correct answer - false
+	3) Debra - false
+	4) Der - false
+	5) Deera - false
+	6) Deer - false
+
+Question 1000:
+Which animal is known to spend 90% of its day, sleeping?
+	Answer: Koala - true
+

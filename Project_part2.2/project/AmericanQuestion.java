@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class AmericanQuestion extends Question {
 
 	private ArrayList<Answer> answers;
+	
 	private final int MAX_NUM_ANSWERS = 10;
 	private final int MIN_NUM_ANSWERS = 4;	
 	
@@ -21,11 +22,39 @@ public class AmericanQuestion extends Question {
 	}
 //********************************************************************************
 	public String toString() {
-		String s = super.toString() + "\n";
+		StringBuffer s= new StringBuffer(super.toString());
+		s.append("\n");
 		for (int i = 0; i < answers.size(); i++) {
-			s = s + "\t" + (i + 1) + ") " + answers.get(i) + "\n";
+			s.append("\t" + (i + 1) + ") " + answers.get(i));
+			s.append("\n");
 		}
-		return s;
+		return s.toString();
+	}
+	
+	public String printQuestionWithAnswer() {
+		return toString();
+	}
+	
+	public String printQuestion() {		
+		StringBuffer s= new StringBuffer(super.toString());
+		s.append("\n");
+		for (int i = 0; i < answers.size(); i++) {
+			s.append("\t" + (i + 1) + ") " + answers.get(i).toStringWithoutAnswer());
+			s.append("\n");
+		}
+		return s.toString();		
+	}
+	
+	@Override
+	public String printAnswer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String printQuestionWithSerial() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 //********************************************************************************
 	public String getQuestion() {
@@ -105,6 +134,19 @@ public class AmericanQuestion extends Question {
 		}
 		return length;
 	}
+	
+	public Answer getCorrectAnswer() {
+		Answer output = null;
+		for(Answer a : answers) {
+			if (a.isCorrect() == true) {
+				output = a;
+			}
+		}
+		return output;
+		
+	}
+
+
 
 	
 	

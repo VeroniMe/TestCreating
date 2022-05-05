@@ -1,6 +1,8 @@
 package project;
 
-public abstract class Question {
+import java.util.Objects;
+
+public abstract class Question implements Printable {
 
 	private int serial;
 	private static int counterSerial=1000;
@@ -45,12 +47,29 @@ public abstract class Question {
 	public <t> Object getAnswer() {
 		return null;
 	}
+	
 	public abstract int getAnswerLength();
 	
-	public boolean addAnswer(String string, boolean b) {
-	return true;
+	public abstract boolean addAnswer(String string, boolean b);
 		
+	
+	
+	public int hashCode() {
+		return Objects.hash(question);
 	}
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Question other = (Question) obj;
+		return Objects.equals(question, other.question);
+	}
+	
+	protected abstract Answer getCorrectAnswer();
 	
 	
 }

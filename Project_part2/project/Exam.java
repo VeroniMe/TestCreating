@@ -1,8 +1,11 @@
 package project;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
-public class Exam {
+public class Exam implements canWorkWithFile {
 	
     private	ArrayList<Question> questions;
 //********************************************************************************
@@ -11,12 +14,12 @@ public class Exam {
 	}
 	//********************************************************************************
 	public String toString() {
-		String s = "-------Exam------- \n\n";
+		StringBuffer s= new StringBuffer("-------Exam------- \n\n");
 		for (int i = 0; i < questions.size(); i++) {
-			s = s + questions.get(i).toString();
-			s = s + "\n";
+			s.append(questions.get(i).toString());
+			s.append("\n");
 		}
-		return s;
+		return s.toString();
 	}
 //********************************************************************************
 	public boolean ifQuestionExist(int id) {
@@ -32,5 +35,22 @@ public class Exam {
 		// TODO Auto-generated method stub
 		return questions;
 	}
+
+
+public void readFromFile() {
+
+	
+}
+public void save(File examFile) throws FileNotFoundException {
+	PrintWriter pw = new PrintWriter(examFile);
+	pw.println(toString());
+	pw.close();
+}
+
+public void saveToFile(File examFile) {
+	
+	
+}
+
 	
 }
