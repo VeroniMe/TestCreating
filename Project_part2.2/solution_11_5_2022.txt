@@ -1,0 +1,27 @@
+Question 1004:
+What animal is said to have 9 lives?
+	1) There are no correct answers - false
+	2) There are more than one correct answer - false
+	3) Deer - false
+	4) Dog - false
+	5) Cat - true
+	6) Whale - false
+
+Question 1005:
+What animal is the largest animal in the world?
+	1) There are no correct answers - true
+	2) There are more than one correct answer - false
+	3) African Elephant - false
+	4) White Rhinoceros - false
+	5) Blue Whale - false
+	6) Killer Whale - false
+
+Question 1003:
+What name is given to a female deer?
+	1) There are no correct answers - true
+	2) There are more than one correct answer - false
+	3) Deera - false
+	4) Debra - false
+	5) Der - false
+	6) Deer - false
+
