@@ -1,6 +1,7 @@
-package proj;
+package model;
 
 import java.util.Iterator;
+
 
 public class AmericanQuestion extends Question {
 
@@ -67,6 +68,7 @@ public class AmericanQuestion extends Question {
 	public boolean addAnswer(Answer newAnswer) {
  		if (answers.size() != MAX_NUM_ANSWERS) {
 			answers.add(newAnswer);
+			System.out.println("addAnswer" + newAnswer.toString());
 			return true;
 		}
 		return false;

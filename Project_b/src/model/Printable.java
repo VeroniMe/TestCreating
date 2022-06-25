@@ -1,4 +1,4 @@
-package proj;
+package model;
 
 public interface Printable {
 	

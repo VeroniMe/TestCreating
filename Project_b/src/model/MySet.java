@@ -1,4 +1,4 @@
-package proj;
+package model;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -93,17 +93,14 @@ public class MySet<T> implements Serializable{
 //********************************************************************************
 	private class SetIterator implements Iterator<T> {
 		private int index = 0;
-//********************************************************************************
 		public boolean hasNext() {
 			if (index < numOfItems)
 				return true;
 			return false;
 		}
-//********************************************************************************
 		public T next() {
 			return data[index++];
 		}
-//********************************************************************************
 	}
 
 }

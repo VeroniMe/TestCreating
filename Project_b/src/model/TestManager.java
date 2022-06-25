@@ -1,6 +1,8 @@
-package proj;
+package model;
 
 import java.io.File;
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +19,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.Vector;
+import listenners.TestModelListener;
 
 public class TestManager {
 	Scanner input = new Scanner(System.in);
@@ -24,12 +27,15 @@ public class TestManager {
 	private Map<Integer, OpenQuestion> openQuestions;
 	private Map<Integer, AmericanQuestion> americanQuestions;
 	private ArrayList<Exam> allExams;
+	private Vector<TestModelListener> listeners;
 
 //********************************************************************************
 	public TestManager() {
 		this.openQuestions = new HashMap<>();
 		this.americanQuestions = new HashMap<>();
 		this.allExams = new ArrayList<>();
+		this.listeners = new Vector<TestModelListener>();
+		reStart();
 
 	}
 
@@ -53,16 +59,19 @@ public class TestManager {
 		String a1 = "Koala";
 		OpenQuestion op1 = new OpenQuestion(q1, a1);
 		openQuestions.put(op1.getSerial(), op1);
+		fireAddQuestionEvent(op1.getSerial());
 
 		String q2 = "What color is the tongue of a giraffe??";
 		String a2 = "Purple";
 		OpenQuestion op2 = new OpenQuestion(q2, a2);
 		openQuestions.put(op2.getSerial(), op2);
+		fireAddQuestionEvent(op2.getSerial());
 
 		String q3 = "What is the name of the fastest land animal?";
 		String a3 = "Cheetah";
 		OpenQuestion op3 = new OpenQuestion(q3, a3);
 		openQuestions.put(op3.getSerial(), op3);
+		fireAddQuestionEvent(op3.getSerial());
 
 		// AMERICAN QUESTIONS
 		AmericanQuestion q4 = new AmericanQuestion("What name is given to a female deer?");
@@ -71,31 +80,34 @@ public class TestManager {
 		americanQuestions.get(q4.getSerial()).addAnswer(new Answer("Debra", false));
 		americanQuestions.get(q4.getSerial()).addAnswer(new Answer("Der", false));
 		americanQuestions.get(q4.getSerial()).addAnswer(new Answer("Deer", false));
-
+		fireAddQuestionEvent(q4.getSerial());
+		
 		AmericanQuestion q5 = new AmericanQuestion("What animal is said to have 9 lives?");
 		americanQuestions.put(q5.getSerial(), q5);
 		americanQuestions.get(q5.getSerial()).addAnswer(new Answer("Deer", false));
 		americanQuestions.get(q5.getSerial()).addAnswer(new Answer("Dog", false));
 		americanQuestions.get(q5.getSerial()).addAnswer(new Answer("Cat", true));
 		americanQuestions.get(q5.getSerial()).addAnswer(new Answer("Whale", false));
-
+		fireAddQuestionEvent(q5.getSerial());
+		
 		AmericanQuestion q6 = new AmericanQuestion("What animal is the largest animal in the world?");
 		americanQuestions.put(q6.getSerial(), q6);
 		americanQuestions.get(q6.getSerial()).addAnswer(new Answer("African Elephant", false));
 		americanQuestions.get(q6.getSerial()).addAnswer(new Answer("White Rhinoceros", false));
 		americanQuestions.get(q6.getSerial()).addAnswer(new Answer("Blue Whale", true));
 		americanQuestions.get(q6.getSerial()).addAnswer(new Answer("Killer Whale", false));
+		fireAddQuestionEvent(q6.getSerial());
 	}
 
 //********************************************************************************
 	public String toString() {
 		StringBuffer s = new StringBuffer();
 		s.append("-----Question view:-----\n\n");
-		s.append("Open questions in system: \n");
+		s.append("****Open questions in system: \n\n");
 		for (Integer i : openQuestions.keySet()) {
 			s.append(openQuestions.get(i).toString());
 		}
-		s.append("\nAmerican questions in system: \n");
+		s.append("\n****American questions in system: \n\n");
 		for (Integer i : americanQuestions.keySet()) {
 			s.append(americanQuestions.get(i).toString());
 
@@ -148,22 +160,60 @@ public class TestManager {
 	public void copyTest(int numOfExam) {
 		allExams.add(allExams.get(numOfExam - 1));
 	}
+
 //********************************************************************************
 	public int addAmericanQuestion(String question) {
+		if(question.length()!=0) {
 		AmericanQuestion newQ = new AmericanQuestion(question);
 		americanQuestions.put(newQ.getSerial(), newQ);
+		fireAddQuestionEvent(newQ.getSerial());
 		return newQ.getSerial();
+		}
+		fireEmptyField();
+		return -1;
 	}
 
 	public int addOpenQuestion(String question, String answer) {
+		
+		if(question.length()!=0 && answer.length()!=0) {
 		OpenQuestion newQ = new OpenQuestion(question, answer);
 		openQuestions.put(newQ.getSerial(), newQ);
+		fireAddQuestionEvent(newQ.getSerial());
 		return newQ.getSerial();
+		}
+		fireEmptyField();
+		return -1;
 	}
+
+	private void fireEmptyField() {
+		for (TestModelListener l : listeners) {
+			l.emptyFieldMessage();
+		}
+		
+	}
+
+	private void fireAddQuestionEvent(int serial) {
+		for (TestModelListener l : listeners) {
+			l.addedQuestionToModelEvent(serial);
+		}
+
+	}
+
 //********************************************************************************
-	public void addAmericanAnswer(int serial, String answer, boolean isCorrect) {
-		americanQuestions.get(serial).addAnswer(answer, isCorrect);
+	public void addAmericanAnswer(int serial, String answer, String isCorrect) {
+		boolean correct = false;
+		
+		//System.out.println(isCorrect + serial);
+		if (isCorrect.toUpperCase().equals("TRUE"))
+			correct = true; 
+		//System.out.println(serial);
+		System.out.println("addAmerican Answer" + answer);
+		americanQuestions.get(serial).addAnswer(answer, correct);
+		
 	}
+
+
+
 //********************************************************************************
 	public boolean isQuestionExist(char type, String question) {
 
@@ -195,6 +245,16 @@ public class TestManager {
 	}
 
 //********************************************************************************
+	public void upDateQuestion(int serial, String newQ) {
+		if (findOpenQuestion(serial)==true) {
+			System.out.println("test manager update quest -" + serial + "  " + newQ);
+			upDateOpenQuestion(serial,  newQ);
+		}
+		else {
+			upDateAmericanQuestion(serial, newQ);
+		}
+	}
+	
 	public void upDateOpenQuestion(int serial, String newQ) {
 		openQuestions.get(serial).setQuestion(newQ);
 	}
@@ -204,17 +264,21 @@ public class TestManager {
 	}
 
 //********************************************************************************
+	
 	public void upDateOpenAnswer(int serial, String newA) {
 		openQuestions.get(serial).setAnswer(newA);
 	}
 
 	public void upDateAmericanAnswer(int serial, int numOfAnswer, String newA, boolean ifCorrect) {
-		americanQuestions.get(serial).setAnswer(numOfAnswer, newA, ifCorrect);
+		americanQuestions.get(serial).setAnswer(numOfAnswer-1, newA, ifCorrect);
 	}
 
 //********************************************************************************
 	public void deleteAmericanAnswer(int serial, int numOfAnswer) {
-		americanQuestions.get(serial).deleteAnswer(numOfAnswer);
+		AmericanQuestion quest = americanQuestions.get(serial);
+		if (numOfAnswer >= 0 && numOfAnswer < quest.getAnswer().size()) {
+			americanQuestions.get(serial).deleteAnswer(numOfAnswer);
+		}
 	}
 
 //********************************************************************************
@@ -249,7 +313,8 @@ public class TestManager {
 
 			if (americanQuestions.containsKey(serial)) { // question is american
 				questionsForTest.add(new AmericanQuestion(americanQuestions.get(serial)));
-				ArrayList<Integer> randomNumbers = buildRandomArr(4, americanQuestions.get(serial).getAnswer().size(),0);
+				ArrayList<Integer> randomNumbers = buildRandomArr(4, americanQuestions.get(serial).getAnswer().size(),
+						0);
 				questionsForTest.get(i).addAnswer("There are no correct answers", true); // adding defult answers
 				questionsForTest.get(i).addAnswer("There are more than one correct answer", false);
 
@@ -274,6 +339,7 @@ public class TestManager {
 		s.append(saveExamToFile(newExam));
 		return s;
 	}
+
 //********************************************************************************
 	// this function randomize lengthArr numbers in range from start to end
 	private ArrayList<Integer> buildRandomArr(int lengthArr, int end, int start) {
@@ -288,6 +354,7 @@ public class TestManager {
 		}
 		return randomNumbers;
 	}
+
 //********************************************************************************
 	public void sortExam(Exam newExam, int sortType) {
 		if (sortType == 1) {
@@ -296,6 +363,7 @@ public class TestManager {
 			newExam.getQuestions().sort(new CompareQuestionsByAnswerLength());
 		}
 	}
+
 //********************************************************************************
 	public StringBuffer saveExamToFile(Exam newExam) {
 		StringBuffer s = new StringBuffer();
@@ -332,10 +400,11 @@ public class TestManager {
 
 		return s;
 	}
+
 //********************************************************************************
 	public void saveQuestionStock() throws FileNotFoundException, IOException {
 		ObjectOutputStream outFile = new ObjectOutputStream(new FileOutputStream("questions_stock"));
-		HashMap <Integer, Question> allQuestions=new HashMap<Integer,Question>();
+		HashMap<Integer, Question> allQuestions = new HashMap<Integer, Question>();
 		for (Integer i : openQuestions.keySet()) {
 			allQuestions.put(openQuestions.get(i).getSerial(), openQuestions.get(i));
 		}
@@ -345,28 +414,40 @@ public class TestManager {
 		outFile.writeObject(allQuestions);
 		outFile.close();
 	}
+
 //********************************************************************************
-		public void loadQuestionStock() throws FileNotFoundException, IOException, ClassNotFoundException {
-		ObjectInputStream inputStream=new ObjectInputStream(new FileInputStream("questions_stock"));
-		HashMap<Integer, Question> allQuestions =(HashMap<Integer, Question>) inputStream.readObject();
-		
-	    for (Integer i : allQuestions.keySet()) {
-	    	if (allQuestions.get(i) instanceof OpenQuestion) {
-	    		openQuestions.put(allQuestions.get(i).getSerial(), (OpenQuestion) allQuestions.get(i));
-	    	}
-	    	else {
-	    		americanQuestions.put(allQuestions.get(i).getSerial(), (AmericanQuestion) allQuestions.get(i));
-	    	}
-	    }
-	    setCounterSerial(allQuestions.size()+1000);     //update serial
+	public void loadQuestionStock() throws FileNotFoundException, IOException, ClassNotFoundException {
+		ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("questions_stock"));
+		HashMap<Integer, Question> allQuestions = (HashMap<Integer, Question>) inputStream.readObject();
+
+		for (Integer i : allQuestions.keySet()) {
+			if (allQuestions.get(i) instanceof OpenQuestion) {
+				openQuestions.put(allQuestions.get(i).getSerial(), (OpenQuestion) allQuestions.get(i));
+			} else {
+				americanQuestions.put(allQuestions.get(i).getSerial(), (AmericanQuestion) allQuestions.get(i));
+			}
+		}
+		setCounterSerial(allQuestions.size() + 1000); // update serial
 		inputStream.close();
 	}
 //********************************************************************************
 
-private void setCounterSerial(int i) {
-	Question.setCounterSerial(i);
-	
-}
+	private void setCounterSerial(int i) {
+		Question.setCounterSerial(i);
 
+	}
+
+	public void registerListener(TestModelListener listener) {
+		listeners.add(listener);
+
+	}
+
+	public void addAnswerToLastQuestion(String text, String correct) {
+		int lastSerial = Question.getCounterSerial();
+		System.out.println("addAnswerto last" + text + "  " + correct);
+		addAmericanAnswer(lastSerial, text, correct);
+				
 		
+	}
+
 }

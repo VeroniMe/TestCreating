@@ -1,4 +1,4 @@
-package proj;
+package model;
 
 import java.util.Objects;
 import java.io.Serializable;
@@ -25,7 +25,7 @@ public abstract class Question implements Printable, Serializable {
 	}
 //********************************************************************************		
 	public String toString() {
-		return "Question " + serial + ":" + "\n" + question;
+		return "---Question " + serial + ":---" + "\n" + question;
 	}
 //********************************************************************************
 	public int getSerial() {
@@ -68,5 +68,11 @@ public abstract class Question implements Printable, Serializable {
 	public static void setCounterSerial(int counterSerial) {
 		Question.counterSerial = counterSerial;
 	}
+	
+	public static int getCounterSerial() {
+		return counterSerial-1;
+	}
+	
+	
 
 }
